@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<div style="border: 1px gray solid;padding: 5px 5px;margin: 10px 0px 10px 0px;">
+    图片名称：<input type="text" id="imgnamesearch">
+    开始时间：<input type="date" id="starttime">&nbsp;
+    结束时间：<input type="date" id="endtime">
+    <button class="btn btn-primary" id="queryTable">查询</button>
+
+</div>
+
+<table id="table">
+</table>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel"><span id="modalAction">添加</span>数据
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    图片名称：<input type="text" id="imgname" value=""><br>
+                    上传图片：<input type="file" id="imgupload" value="" onchange="uploadImg()"><br>
+                    <div id="imgborder" style="height: 210px;width: 320px; padding-bottom: 5px; padding-top: 5px; border: dotted">
+                        <img src="" id="imgload" width="300" height="200" style="display: none"><br>
+                    </div>
+                    关联表名：<label id="tablename"></label><br>
+                    图片描述：<input type="text" id="note" value=""><br>
+                    <input type="hidden" id="imgid">
+                    <input type="hidden" id="imgpath">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button onclick="submitData()" type="button" class="btn btn-primary">
+                    提交
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                    图片名称：<label text="" id="imgname_detail"></label><br>
+                    图片：<div id="imgborder2" style="height: 210px;width: 320px; padding-bottom: 5px; padding-top: 5px; border: dotted">
+                            <img src="" id="image_detail" style="width:300px;height: 200px;">
+                        </div><br>
+                    关联表名：<label text="" id="tablename_detail" ></label><br>
+                    图片UUid：<label text="" id="imguuid_detail" ></label><br>
+                    图片路径：<label text="" id="imgpath_detail" ></label><br>
+                    更新时间：<label text="" id="timestamp_detail"></label><br>
+                    图片描述：<label text="" id="note_detail"></label><br>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<script>
+
+    function queryData() {
+        $.ajax({
+            url: "query_image.json?imgId=" + row_id,
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                $('#myModal').modal("toggle");
+                $('#imgid').val("");
+                $('#imgname').val("");
+                $('#tablename').val("");
+                $('#fileupload').val("");
+                $('#note').val("");
+            }
+        });
+    }
+
+    function updateData(row_id) {
+
+        $.ajax({
+            url: "query_imagebyid.json?imgId=" + row_id,
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    $('#modalAction').html("修改");
+                    $('#imgname').val(data.data.imgName);
+                    //修改图片
+                    $('#imgload').attr("src", data.data.imgPath);
+                    $('#imgload').show()
+                    $('#tablename').text(data.data.tableName);
+                    $('#note').val(data.data.note);
+                    $('#imgid').val(data.data.imgId);
+                    $('#imgpath').val(data.data.oldPath);
+                    $('#myModal').modal('toggle');
+                }
+            }
+        });
+
+    }
+
+    function queryDataById(row_id) {
+
+        $.ajax({
+            url: "query_imagebyid.json?imgId=" + row_id,
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    $('#modalAction').html("详情");
+                    $('#imgname_detail').text(data.data.imgName);
+                    $('#image_detail').attr("src", data.data.imgPath);
+                    $('#image_detail').show();
+                    $('#timestamp_detail').text(data.data.timestamp);
+                    $('#imguuid_detail').text(data.data.imgUuid);
+                    $('#imgpath_detail').text(data.data.oldPath);
+                    $('#tablename_detail').text(data.data.tableName);
+                    $('#note_detail').text(data.data.note);
+                    $('#detailModal').modal('toggle');
+                }
+            }
+        });
+
+    }
+
+
+    function deleteData(row_id) {
+        if (!confirm("确定删除吗？")) {
+            return;
+        }
+        $.ajax({
+            url: "delete_image.json?imgId=" + row_id,
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                if (data.data) {
+                    alert("成功！");
+                    window.location.reload();
+                }
+            }
+        });
+    }
+
+    function submitData() {
+        var uri;
+        var data = {
+            'imgName': $('#imgname').val(),
+            'imgId': $('#imgid').val(),
+            'imgPath': $('#imgpath').val(),
+            'note': $('#note').val()
+        };
+        if ($('#modalAction').html() == '添加') {
+            uri = "add_image.json";
+        } else {
+            uri = "update_image.json";
+            data.id = $('#imgid').val();
+        }
+
+        $.ajax({
+            url: uri,
+            method: "Post",
+            dataType: "json",
+            data: data,
+            success: function (data) {
+                if (data.data) {
+                    alert("成功！");
+                    window.location.reload();
+                }
+            }
+        });
+    }
+
+    function uploadImg(){
+        var file = $('#imgupload')[0].files[0];//获取选择的文件
+        var formData=new FormData();//构建form表单
+        formData.append("file",file);
+        var name = file.name;
+        // 获取文件后缀
+        var sfIndex=name.lastIndexOf(".");//后缀位置的.的位置
+        var ext= name.substring(sfIndex,name.length).toUpperCase();//截取后缀
+        console.log(ext)
+        // 文件大小  单位:M
+        var size=parseInt(file.size/1024/1024);
+        //判断文件类型,后台也要做判断
+        if(ext !='.PNG' && ext !='.GIF' && ext !='.JPG' && ext !='.JPEG' && ext !='.BMP'){
+            vmToast.show("文件类型错误,请上传正确图片类型(png、gif、jpg、jpeg、bmp)");
+            return false;
+        }
+        if(size>10){//文件过大,部分服务器流量有限制,而且后续打开会比较慢
+            alert("文件已大于10M，请换个小点的图片");
+            return false;
+        }
+
+        $.ajax({
+            url: "uploadimg",
+            method: "POST",
+            data: formData,
+            contentType:false,
+            dataType: "json",
+            processData: false,
+            success: function (data) {
+                if (data) {
+                    console.log("回显了图片");
+                    var imgPath = data.data.path;
+                    //$('#imgload').attr("src","https://nimg.ws.126.net/?url=http%3A%2F%2Fdingyue.ws.126.net%2F2021%2F0818%2F96d73724j00qy0uqu001xc000hs00a1g.jpg&thumbnail=650x2147483647&quality=80&type=jpg");
+                    $('#imgload').attr("src","http://127.0.0.1:8080/show_img?imgPath="+imgPath);
+                    $('#imgload').show();
+                    $('#imgpath').val(imgPath);
+                    alert("上传成功！")
+                }
+            },
+            error: function(ajaxobj) { //有异常
+                alert("异常："+ajaxobj.responseText);
+            }
+        });
+    }
+
+    function initQuery() {
+        $('#table').bootstrapTable(getTable());
+    }
+
+    function getTable() {
+        return {
+            method: 'GET',
+            dataType: 'json',
+            contentType: "application/json;charset=UTF-8",
+            cache: false,
+            striped: true,                              //是否显示行间隔色
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            url: "query_image.json",
+            width: $(window).width(),
+            pagination: true,                  //分页开关
+            queryParams: function queryParams(params) {
+                var searchParams = getSearchParams();
+                searchParams.page = this.pageNumber;
+                searchParams.size = this.pageSize;
+                return searchParams;
+            },
+            minimumCountColumns: 2,
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 7,                       //每页的记录行数（*）
+            pageList: [7, 12, 20],             //可供选择的每页的行数（*）
+            uniqueId: "imgId",                     //每一行的唯一标识，一般为主键列
+            showToggle: false,
+            responseHandler: responseHandler,
+            onLoadError: function (status) {
+                alert("数据加载失败，请刷新后重试。")
+            },
+            columns: [
+                {
+                    field: 'number',
+                    title: '序号',
+                    formatter: function (value, row, index) {
+                        return index+1;
+                    }
+                },
+                {
+                    field: 'imgName',
+                    title: '图片名称',
+                    visible: true
+                },
+                {
+                    field: 'timestamp',
+                    title: '更新时间',
+                    visible: true
+                },
+                {
+                    field: 'tableName',
+                    title: '关联业务表名',
+                    visible: true
+                },
+                {
+                    field: 'note',
+                    title: '图片描述',
+                    visible: true
+                },
+                {
+                    field: 'imgId',
+                    title: '操作',
+                    formatter: function (value, row, index) {
+                        var operation = '<button class="btn btn-primary" onclick="updateData(' + row.imgId + ')"  >修改</button>';
+                        operation += '&nbsp;&nbsp;<button class="btn-success btn" onclick="queryDataById(' + row.imgId + ')" >详情</button>';
+
+                        return operation;
+                    }
+                }
+            ]
+        }
+    }
+
+    function responseHandler(data) {
+        return {
+            "rows": data.data.rows,
+            "total": data.data.total
+        };
+    }
+
+    function getSearchParams() {
+        var param = {};
+        param.imgName = $('#imgnamesearch').val();
+        param.startTime = $('#starttime').val();
+        param.endTime = $('#endtime').val();
+        return param;
+    }
+
+    $(function () {
+        initQuery();
+        $('#queryTable').click(function () {
+            $('#table').bootstrapTable('refresh', getTable());
+        });
+    });
+</script>
+</body>
+</html>

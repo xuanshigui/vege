@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<!-- 按钮触发模态框 -->
+<button class="btn btn-primary" data-toggle="modal" onclick="insertData()">
+    添加数据
+</button>
+
+<div style="border: 1px gray solid;padding: 5px 5px;margin: 10px 0px 10px 0px;">
+    类别名称：<input type="text" id="knowledgecategorynamesearch">
+    <button class="btn btn-primary" id="queryTable">查询</button>
+
+</div>
+
+<table id="table">
+</table>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="reset()">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel"><span id="modalAction">添加</span>数据
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    知识分类名称：<input type="text" id="knowledgecategoryname" value="" style="width: 300px;"><br>
+                    知识分类说明：<textarea id="introduction" value="" style="width: 400px;height: 300px"></textarea><br>
+                    <input type="hidden" id="kcid">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="reset()">关闭
+                </button>
+                <button onclick="submitData()" type="button" class="btn btn-primary">
+                    提交
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                    知识分类名称：<label text="" id="knowledgecategoryname_detail" value=""></label><br>
+                    知识分类说明：<label text="" id="introduction_detail" value=""></label><br>
+                    更新时间：<label text="" id="updatetime_detail" value=""></label><br>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<script>
+
+    function insertData() {
+        $('#myModal').modal("toggle");
+        $('#knowledgecategoryname').val("");
+        $('#introduction').val("");
+        $('#kcid').val("");
+        $('#modalAction').html("添加");
+    }
+
+    function updateData(row_id) {
+
+        $.ajax({
+            url: "query_knowledgecategorybyid.json?kcId=" + row_id,
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    $('#modalAction').html("修改");
+                    //导入蔬菜列表
+                    $('#knowledgecategoryname').val(data.data.knowledgeCategoryName);
+                    $('#introduction').val(data.data.introduction);
+                    $('#kcid').val(data.data.kcId);
+                    $('#myModal').modal('toggle');
+                }
+            }
+        });
+
+    }
+
+    function queryDataById(row_id) {
+
+        $.ajax({
+            url: "query_knowledgecategorybyid.json?kcId=" + row_id,
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    $('#modalAction').html("详情");
+                    $('#knowledgecategoryname_detail').text(data.data.knowledgeCategoryName);
+                    $('#introduction_detail').text(data.data.introduction);
+                    $('#updatetime_detail').text(data.data.updateTime);
+                    $('#kcid').text(data.data.kcId);
+                    $('#detailModal').modal('toggle');
+                }
+            }
+        });
+
+    }
+
+
+    function deleteData(row_id) {
+        if (!confirm("确定删除吗？")) {
+            return;
+        }
+        $.ajax({
+            url: "delete_knowledgecategory.json?kcId=" + row_id,
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                if (data.data) {
+                    window.location.reload();
+                }else {
+                    alert("还有关联知识！");
+                    window.location.reload();
+                }
+            }
+        });
+    }
+
+    function submitData() {
+        var uri;
+        if(""==$('#knowledgecategoryname').val()||$('#knowledgecategoryname').val()==null){
+            alert("请填写知识分类名称！");
+            return;
+        }
+        if(""==$('#introduction').val()||$('#introduction').val()==null){
+            alert("请填写知识分类介绍！");
+            return;
+        }
+        var data = {
+            'knowledgeCategoryName': $('#knowledgecategoryname').val(),
+            'kcId': $('#kcid').val(),
+            'introduction': $('#introduction').val()
+        };
+
+
+        if ($('#modalAction').html() == '添加') {
+            uri = "add_knowledgecategory.json";
+        } else {
+            uri = "update_knowledgecategory.json";
+            data.id = $('#kcid').val();
+        }
+
+        $.ajax({
+            url: uri,
+            method: "Post",
+            dataType: "json",
+            data: data,
+            success: function (data) {
+                if (data.data) {
+                    alert("成功！");
+                    window.location.reload();
+                }
+            }
+        });
+    }
+
+    function initQuery() {
+        $('#table').bootstrapTable(getTable());
+    }
+
+    function getTable() {
+        return {
+            method: 'GET',
+            dataType: 'json',
+            contentType: "application/json;charset=UTF-8",
+            cache: false,
+            striped: true,                              //是否显示行间隔色
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            url: "query_knowledgecategory.json",
+            width: $(window).width(),
+            pagination: true,                  //分页开关
+            queryParams: function queryParams(params) {
+                var searchParams = getSearchParams();
+                searchParams.page = this.pageNumber;
+                searchParams.size = this.pageSize;
+                return searchParams;
+            },
+            minimumCountColumns: 2,
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 7,                       //每页的记录行数（*）
+            pageList: [7, 12, 20],             //可供选择的每页的行数（*）
+            uniqueId: "epId",                     //每一行的唯一标识，一般为主键列
+            showToggle: false,
+            responseHandler: responseHandler,
+            onLoadError: function (status) {
+                alert("数据加载失败，请刷新后重试。")
+            },
+            columns: [
+                {
+                    field: 'number',
+                    title: '序号',
+                    formatter: function (value, row, index) {
+                        return index+1;
+                    }
+                },
+                {
+                    field: 'knowledgeCategoryName',
+                    title: '知识分类名称',
+                    visible: true
+                },
+                {
+                    field: 'updateTime',
+                    title: '更新时间',
+                    visible: true
+                },
+                {
+                    field: 'kcId',
+                    title: '操作',
+                    formatter: function (value, row, index) {
+                        var operation = '<button class="btn btn-primary" onclick="updateData(' + row.kcId + ')"  >修改</button>';
+                        operation += '&nbsp;&nbsp;<button class="btn-danger btn" onclick="deleteData(' + row.kcId + ')" >删除</button>';
+                        operation += '&nbsp;&nbsp;<button class="btn-success btn" onclick="queryDataById(' + row.kcId + ')" >详情</button>';
+
+                        return operation;
+                    }
+                }
+            ]
+        }
+    }
+
+    function responseHandler(data) {
+        return {
+            "rows": data.data.rows,
+            "total": data.data.total
+        };
+    }
+
+    function getSearchParams() {
+        var param = {};
+        param.knowledgeCategoryName = $('#knowledgecategorynamesearch').val();
+        return param;
+    }
+
+    $(function () {
+        initQuery();
+        $('#queryTable').click(function () {
+            $('#table').bootstrapTable('refresh', getTable());
+        });
+    });
+
+
+    function reset(){
+        window.location.reload();
+    }
+</script>
+</body>
+</html>
