@@ -107,7 +107,7 @@ public class CompanyController extends BaseController {
         //载入图片
         String imgPath = "";
         imgPath = imageService.queryPathByUuid(company.getImgUuid());
-        data.put("imgPath", "http://127.0.0.1:8080/show_img?imgPath="+imgPath);
+        data.put("imgPath", URL+imgPath);
         data.put("imgUuid", company.getImgUuid());
         data.put("introduction", company.getIntroduction());
         data.put("type", company.getType());

@@ -147,7 +147,7 @@ public class VarietyController extends BaseController {
         data.put("timestamp", variety.getTimestamp());
         String imgPath = "";
         imgPath = imageService.queryPathByUuid(variety.getImgUuid());
-        data.put("imgPath", "http://127.0.0.1:8080/show_img?imgPath="+imgPath);
+        data.put("imgPath", URL+imgPath);
         data.put("imgUuid", variety.getImgUuid());
         data.put("source", variety.getSource());
 

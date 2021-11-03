@@ -7,6 +7,7 @@ import java.util.Map;
 
 abstract class BaseController {
 
+    protected static String URL = "http://8.142.64.137:8080/show_img?imgPath=";
     static Map<String, String> buildData(HttpServletRequest request, List<String> fields) {
         Map<String, String> data = new HashMap<>();
         for (String field : fields) {

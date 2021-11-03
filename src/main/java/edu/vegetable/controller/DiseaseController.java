@@ -2,10 +2,7 @@ package edu.vegetable.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import edu.vegetable.constants.Constants;
-import edu.vegetable.model.Cure;
-import edu.vegetable.model.Disease;
-import edu.vegetable.model.Symptom;
-import edu.vegetable.model.VegeInfo;
+import edu.vegetable.model.*;
 import edu.vegetable.service.DiseaseService;
 import edu.vegetable.service.ImageService;
 import edu.vegetable.service.VegeInfoService;
@@ -98,6 +95,9 @@ public class DiseaseController extends BaseController {
         }
         disease.setDiseaseName(data.get("diseaseName"));
         if (data.get("imguuid0")==null||data.get("imguuid0").equals("")){
+            //删掉旧图
+            Image oldImage = imageService.queryById(disease.getImgUuid0());
+            imageService.delete(String.valueOf(oldImage.getImgId()));
             //建立图片
             String imgUuid = imageService.add(data.get("diseaseImg0"),disease.getClass().getSimpleName());
             disease.setImgUuid0(imgUuid);
@@ -105,6 +105,9 @@ public class DiseaseController extends BaseController {
             disease.setImgUuid0(data.get("imguuid0"));
         }
         if (data.get("imguuid1")==null||data.get("imguuid1").equals("")){
+            //删掉旧图
+            Image oldImage = imageService.queryById(disease.getImgUuid1());
+            imageService.delete(String.valueOf(oldImage.getImgId()));
             //建立图片
             String imgUuid = imageService.add(data.get("diseaseImg1"),disease.getClass().getSimpleName());
             disease.setImgUuid1(imgUuid);
@@ -112,6 +115,9 @@ public class DiseaseController extends BaseController {
             disease.setImgUuid1(data.get("imguuid1"));
         }
         if (data.get("imguuid2")==null||data.get("imguuid2").equals("")){
+            //删掉旧图
+            Image oldImage = imageService.queryById(disease.getImgUuid2());
+            imageService.delete(String.valueOf(oldImage.getImgId()));
             //建立图片
             String imgUuid = imageService.add(data.get("diseaseImg2"),disease.getClass().getSimpleName());
             disease.setImgUuid2(imgUuid);
@@ -119,6 +125,9 @@ public class DiseaseController extends BaseController {
             disease.setImgUuid2(data.get("imguuid2"));
         }
         if (data.get("imguuid3")==null||data.get("imguuid3").equals("")){
+            //删掉旧图
+            Image oldImage = imageService.queryById(disease.getImgUuid3());
+            imageService.delete(String.valueOf(oldImage.getImgId()));
             //建立图片
             String imgUuid = imageService.add(data.get("diseaseImg3"),disease.getClass().getSimpleName());
             disease.setImgUuid3(imgUuid);
@@ -159,22 +168,22 @@ public class DiseaseController extends BaseController {
         String imgPath;
         if(disease.getImgUuid0()!=null&&!"".equals(disease.getImgUuid0())){
             imgPath = imageService.queryPathByUuid(disease.getImgUuid0());
-            data.put("imgPath0", "http://127.0.0.1:8080/show_img?imgPath="+imgPath);
+            data.put("imgPath0", URL+imgPath);
             data.put("imgUuid0", disease.getImgUuid0());
         }
         if(disease.getImgUuid1()!=null&&!"".equals(disease.getImgUuid1())){
             imgPath = imageService.queryPathByUuid(disease.getImgUuid1());
-            data.put("imgPath1", "http://127.0.0.1:8080/show_img?imgPath="+imgPath);
+            data.put("imgPath1", URL+imgPath);
             data.put("imgUuid1", disease.getImgUuid1());
         }
         if(disease.getImgUuid2()!=null&&!"".equals(disease.getImgUuid2())){
             imgPath = imageService.queryPathByUuid(disease.getImgUuid2());
-            data.put("imgPath2", "http://127.0.0.1:8080/show_img?imgPath="+imgPath);
+            data.put("imgPath2", URL+imgPath);
             data.put("imgUuid2", disease.getImgUuid2());
         }
         if(disease.getImgUuid3()!=null&&!"".equals(disease.getImgUuid3())){
             imgPath = imageService.queryPathByUuid(disease.getImgUuid3());
-            data.put("imgPath3", "http://127.0.0.1:8080/show_img?imgPath="+imgPath);
+            data.put("imgPath3", URL+imgPath);
             data.put("imgUuid3", disease.getImgUuid3());
         }
 

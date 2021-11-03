@@ -122,7 +122,7 @@ public class VegeInfoController extends BaseController {
             data.put("breedStageList",breedStageList);
         }
         imgPath = imageService.queryPathByUuid(vege.getImgUuid());
-        data.put("imgPath", "http://8.142.64.137:8080/show_img?imgPath="+imgPath);
+        data.put("imgPath", URL+imgPath);
         data.put("introduction", vege.getIntroduction());
         data.put("classification", Constants.VEGE_CLASS_MAP.get(vege.getClassification()));
         data.put("note", vege.getNote());

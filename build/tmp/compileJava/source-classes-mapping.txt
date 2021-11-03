@@ -16,26 +16,26 @@ edu/vegetable/dao/EnvParamRepository.java
  edu.vegetable.dao.EnvParamRepository
 edu/vegetable/dao/StandardRepository.java
  edu.vegetable.dao.StandardRepository
-edu/vegetable/controller/DrugController.java
- edu.vegetable.controller.DrugController
-edu/vegetable/controller/CompanyController.java
- edu.vegetable.controller.CompanyController
-edu/vegetable/controller/CureController.java
- edu.vegetable.controller.CureController
+edu/vegetable/service/CultivateModeService.java
+ edu.vegetable.service.CultivateModeService
+edu/vegetable/model/Disease.java
+ edu.vegetable.model.Disease
+edu/vegetable/dao/BreedStageRepository.java
+ edu.vegetable.dao.BreedStageRepository
 edu/vegetable/service/impl/UserServiceImpl.java
  edu.vegetable.service.impl.UserServiceImpl
 edu/vegetable/service/EnvParamService.java
  edu.vegetable.service.EnvParamService
-edu/vegetable/controller/CultivateModeController.java
- edu.vegetable.controller.CultivateModeController
+edu/vegetable/dao/CompanyRepository.java
+ edu.vegetable.dao.CompanyRepository
 edu/vegetable/model/Cure.java
  edu.vegetable.model.Cure
 edu/vegetable/model/Variety.java
  edu.vegetable.model.Variety
 edu/vegetable/service/CureService.java
  edu.vegetable.service.CureService
-edu/vegetable/controller/UploadController.java
- edu.vegetable.controller.UploadController
+edu/vegetable/service/UserService.java
+ edu.vegetable.service.UserService
 edu/vegetable/model/MobileVege.java
  edu.vegetable.model.MobileVege
 edu/vegetable/utils/MD5Utils.java
@@ -50,8 +50,8 @@ edu/vegetable/Interceptor/LoginInterceptor.java
  edu.vegetable.Interceptor.LoginInterceptor
 edu/vegetable/dao/KnowledgeCategoryRepository.java
  edu.vegetable.dao.KnowledgeCategoryRepository
-edu/vegetable/controller/ImageController.java
- edu.vegetable.controller.ImageController
+edu/vegetable/service/impl/DiseaseServiceImpl.java
+ edu.vegetable.service.impl.DiseaseServiceImpl
 edu/vegetable/model/VegeKnowledge.java
  edu.vegetable.model.VegeKnowledge
 edu/vegetable/model/Image.java
@@ -83,12 +83,12 @@ edu/vegetable/service/ImageService.java
  edu.vegetable.service.ImageService
 edu/vegetable/service/impl/CompanyServiceImpl.java
  edu.vegetable.service.impl.CompanyServiceImpl
-edu/vegetable/controller/BaseController.java
- edu.vegetable.controller.BaseController
+edu/vegetable/dao/ImageRepository.java
+ edu.vegetable.dao.ImageRepository
 edu/vegetable/service/impl/FileServiceImpl.java
  edu.vegetable.service.impl.FileServiceImpl
-edu/vegetable/controller/DiseaseController.java
- edu.vegetable.controller.DiseaseController
+edu/vegetable/model/MobileDisease.java
+ edu.vegetable.model.MobileDisease
 edu/vegetable/service/impl/BaseService.java
  edu.vegetable.service.impl.BaseService
 edu/vegetable/VegetableStarter.java
@@ -99,14 +99,14 @@ edu/vegetable/model/Drug.java
  edu.vegetable.model.Drug
 edu/vegetable/service/impl/ImageServiceImpl.java
  edu.vegetable.service.impl.ImageServiceImpl
-edu/vegetable/controller/VarietyController.java
- edu.vegetable.controller.VarietyController
-edu/vegetable/controller/StandardController.java
- edu.vegetable.controller.StandardController
+edu/vegetable/service/KnowledgeCategoryService.java
+ edu.vegetable.service.KnowledgeCategoryService
+edu/vegetable/service/impl/SymptomServiceImpl.java
+ edu.vegetable.service.impl.SymptomServiceImpl
 edu/vegetable/service/impl/EnvParamServiceImpl.java
  edu.vegetable.service.impl.EnvParamServiceImpl
-edu/vegetable/controller/EnvParamController.java
- edu.vegetable.controller.EnvParamController
+edu/vegetable/service/VegeInfoService.java
+ edu.vegetable.service.VegeInfoService
 edu/vegetable/service/VarietyService.java
  edu.vegetable.service.VarietyService
 edu/vegetable/dao/CureRepository.java
@@ -119,14 +119,14 @@ edu/vegetable/model/VegeInfo.java
  edu.vegetable.model.VegeInfo
 edu/vegetable/dao/SymptomRepository.java
  edu.vegetable.dao.SymptomRepository
-edu/vegetable/controller/SymptomController.java
- edu.vegetable.controller.SymptomController
+edu/vegetable/service/impl/VegeKnowledgeServiceImpl.java
+ edu.vegetable.service.impl.VegeKnowledgeServiceImpl
 edu/vegetable/model/Company.java
  edu.vegetable.model.Company
 edu/vegetable/dao/UserRepository.java
  edu.vegetable.dao.UserRepository
-edu/vegetable/controller/BreedStageController.java
- edu.vegetable.controller.BreedStageController
+edu/vegetable/dao/ImageDao.java
+ edu.vegetable.dao.ImageDao
 edu/vegetable/dao/DiseaseRepository.java
  edu.vegetable.dao.DiseaseRepository
 edu/vegetable/dao/DrugRepository.java
@@ -147,41 +147,41 @@ edu/vegetable/model/User.java
  edu.vegetable.model.User
 edu/vegetable/model/EnvParam.java
  edu.vegetable.model.EnvParam
-edu/vegetable/controller/VegeKnowledgeController.java
- edu.vegetable.controller.VegeKnowledgeController
-edu/vegetable/dao/ImageRepository.java
- edu.vegetable.dao.ImageRepository
-edu/vegetable/service/KnowledgeCategoryService.java
- edu.vegetable.service.KnowledgeCategoryService
-edu/vegetable/service/UserService.java
- edu.vegetable.service.UserService
-edu/vegetable/service/impl/DiseaseServiceImpl.java
- edu.vegetable.service.impl.DiseaseServiceImpl
-edu/vegetable/controller/UserController.java
- edu.vegetable.controller.UserController
-edu/vegetable/service/impl/VegeKnowledgeServiceImpl.java
- edu.vegetable.service.impl.VegeKnowledgeServiceImpl
-edu/vegetable/controller/NavigateController.java
- edu.vegetable.controller.NavigateController
-edu/vegetable/dao/CompanyRepository.java
- edu.vegetable.dao.CompanyRepository
-edu/vegetable/dao/BreedStageRepository.java
- edu.vegetable.dao.BreedStageRepository
-edu/vegetable/model/Disease.java
- edu.vegetable.model.Disease
-edu/vegetable/controller/KnowledgeCategoryController.java
- edu.vegetable.controller.KnowledgeCategoryController
-edu/vegetable/service/VegeInfoService.java
- edu.vegetable.service.VegeInfoService
-edu/vegetable/service/CultivateModeService.java
- edu.vegetable.service.CultivateModeService
-edu/vegetable/dao/ImageDao.java
- edu.vegetable.dao.ImageDao
-edu/vegetable/service/impl/SymptomServiceImpl.java
- edu.vegetable.service.impl.SymptomServiceImpl
+edu/vegetable/controller/DiseaseController.java
+ edu.vegetable.controller.DiseaseController
+edu/vegetable/controller/ImageController.java
+ edu.vegetable.controller.ImageController
 edu/vegetable/controller/VegeInfoController.java
  edu.vegetable.controller.VegeInfoController
+edu/vegetable/controller/StandardController.java
+ edu.vegetable.controller.StandardController
+edu/vegetable/controller/VegeKnowledgeController.java
+ edu.vegetable.controller.VegeKnowledgeController
+edu/vegetable/controller/DrugController.java
+ edu.vegetable.controller.DrugController
+edu/vegetable/controller/EnvParamController.java
+ edu.vegetable.controller.EnvParamController
+edu/vegetable/controller/UserController.java
+ edu.vegetable.controller.UserController
+edu/vegetable/controller/CompanyController.java
+ edu.vegetable.controller.CompanyController
+edu/vegetable/controller/CureController.java
+ edu.vegetable.controller.CureController
+edu/vegetable/controller/NavigateController.java
+ edu.vegetable.controller.NavigateController
+edu/vegetable/controller/CultivateModeController.java
+ edu.vegetable.controller.CultivateModeController
+edu/vegetable/controller/KnowledgeCategoryController.java
+ edu.vegetable.controller.KnowledgeCategoryController
+edu/vegetable/controller/SymptomController.java
+ edu.vegetable.controller.SymptomController
 edu/vegetable/controller/MobileController.java
  edu.vegetable.controller.MobileController
-edu/vegetable/model/MobileDisease.java
- edu.vegetable.model.MobileDisease
+edu/vegetable/controller/UploadController.java
+ edu.vegetable.controller.UploadController
+edu/vegetable/controller/VarietyController.java
+ edu.vegetable.controller.VarietyController
+edu/vegetable/controller/BaseController.java
+ edu.vegetable.controller.BaseController
+edu/vegetable/controller/BreedStageController.java
+ edu.vegetable.controller.BreedStageController
