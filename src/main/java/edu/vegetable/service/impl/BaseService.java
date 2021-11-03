@@ -8,7 +8,7 @@ import java.util.Map;
 public class BaseService {
 
     protected Pageable getPageable(Map<String, String> condition) {
-        int page = 0;
+        int page = 1;
         int size = 7;
         String pageStr = condition.get("page");
         if (pageStr != null && !pageStr.equals("")) {

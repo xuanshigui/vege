@@ -27,11 +27,11 @@
             <div class="modal-body">
                 <table class="table table-detail">
                     <tr>
-                        <th>蔬菜名称：</th>
+                        <th style="width: 120px;">蔬菜名称：</th>
                         <td>
                             <span id="vegename_detail"></span>
                         </td>
-                        <td rowspan="5" align="center">
+                        <td rowspan="5">
                             <div id="imgborder" style="vertical-align:middle; height: 210px;width: 320px; padding-bottom: 5px; padding-top: 5px;">
                                 <img src="" id="image_detail" style="width:320px;height: 200px;">
                             </div>
@@ -65,9 +65,9 @@
                             <table text="" id="breedstage_detail" class="table-striped">
                                 <thead>
                                     <tr>
-                                        <th width="200px">生长周期名称</th>
-                                        <th width="620px">定义</th>
-                                        <th width="100px">时长</th>
+                                        <th style="width: 150px">生长周期名称</th>
+                                        <th style="width: auto">定义</th>
+                                        <th style="width: 100px">时长</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -115,8 +115,8 @@
                     if (data.data) {
                         $('#modalAction').html("详情");
                         //清空
-                        $('#intro_child').remove();
-                        $('#breedstage_detail').remove();
+                        $('#intro_child').empty();
+                        //$('#breedstage_detail').empty();
                         //装载
                         $('#vegename_detail').text(data.data.vegeName);
                         $('#alias_detail').text(data.data.alias);
@@ -128,8 +128,8 @@
                         $('#updatetime_detail').text(data.data.updateTime);
                         //$('#vegeid_detail').val(data.data.vegeId);
                         $('#detailModal').modal('toggle');
-                        if(data.data.breedStageList){
-                            $.each(data.data.breedStageList,function(index,item){
+                        if(data.data.breedStageList!=null){
+                            $.each(data.data.breedStageList, function(index,item){
                                 $('#breedstage_detail').append("<tr id='breedstage"+index+"'><td>"+item.stageName+"</td><td>"+item.definition+"</td><td>"+item.duration+"</td></tr>");
                             });
                         }

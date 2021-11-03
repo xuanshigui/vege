@@ -100,11 +100,11 @@ public class VarietyController extends BaseController {
         if (data.get("imguuid")==null||data.get("imguuid").equals("")){
             //建立图片，新图片
             Image oldImg = imageService.queryByUuid(variety.getImgUuid());
-            imageService.delete(String.valueOf(oldImg.getImgId()));
+            if(oldImg!=null){
+                imageService.delete(String.valueOf(oldImg.getImgId()));
+            }
             String imgUuid = imageService.add(data.get("varietyImg"),variety.getClass().getSimpleName());
             variety.setImgUuid(imgUuid);
-        } else {
-            variety.setImgUuid(data.get("imguuid"));
         }
         //修改养殖模式
         String[] cm = data.get("cultivateModes").split(",");

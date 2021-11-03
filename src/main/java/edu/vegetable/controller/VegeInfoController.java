@@ -69,18 +69,17 @@ public class VegeInfoController extends BaseController {
     public Map update(HttpServletRequest request, HttpServletResponse response) {
         List<String> fields = Arrays.asList( "vegeId", "vegeName", "vegeImg", "alias", "introduction", "classification", "note", "imguuid");
         Map<String, String> data = buildData(request,fields);
-        VegeInfo vege = new VegeInfo();
+        VegeInfo vege = vegeService.queryById(data.get("vegeId"));
         vege.setVegeName(data.get("vegeName"));
         vege.setAlias(data.get("alias"));
         vege.setIntroduction(data.get("introduction"));
         vege.setClassification(data.get("classification"));
-        if(data.size()==7){
-            //旧的图片保存
-            vege.setImgUuid(data.get("imguuid"));
-        }else {
+        if (data.get("imguuid")==null||data.get("imguuid").equals("")){
             //建立图片
             Image oldImg = imageService.queryByUuid(vege.getImgUuid());
-            imageService.delete(String.valueOf(oldImg.getImgId()));
+            if(oldImg!=null){
+                imageService.delete(String.valueOf(oldImg.getImgId()));
+            }
             String imgUuid = imageService.add(data.get("vegeImg"),vege.getClass().getSimpleName());
             vege.setImgUuid(imgUuid);
         }
@@ -100,7 +99,6 @@ public class VegeInfoController extends BaseController {
         JSONObject data = new JSONObject();
         data.put("total", result.getTotalElements());
         data.put("rows", result.getContent());
-        List<VegeInfo> list = result.getContent();
         data.put("classificationMap",Constants.CLASS_VEGE_MAP);
         return buildResponse(data);
     }
@@ -124,7 +122,7 @@ public class VegeInfoController extends BaseController {
             data.put("breedStageList",breedStageList);
         }
         imgPath = imageService.queryPathByUuid(vege.getImgUuid());
-        data.put("imgPath", "http://127.0.0.1:8080/show_img?imgPath="+imgPath);
+        data.put("imgPath", "http://8.142.64.137:8080/show_img?imgPath="+imgPath);
         data.put("introduction", vege.getIntroduction());
         data.put("classification", Constants.VEGE_CLASS_MAP.get(vege.getClassification()));
         data.put("note", vege.getNote());

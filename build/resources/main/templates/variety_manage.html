@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <script>
@@ -386,7 +386,7 @@
             alert("请选择品种来源！");
             return;
         }
-        if(""==$('#imgupload').val()||$('#imgupload').val()==null){
+        if((""==$('#imgupload').val()||$('#imgupload').val()==null)&&(""==$('#imguuid').val()||$('#imguuid').val()==null)){
             alert("请上传品种图片！");
             return;
         }

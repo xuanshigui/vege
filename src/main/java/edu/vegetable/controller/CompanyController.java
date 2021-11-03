@@ -68,11 +68,11 @@ public class CompanyController extends BaseController {
         if (data.get("imguuid")==null||data.get("imguuid").equals("")){
             //建立图片
             Image oldImg = imageService.queryByUuid(company.getImgUuid());
-            imageService.delete(String.valueOf(oldImg.getImgId()));
-            String imgUuid = imageService.add(data.get("varietyImg"),company.getClass().getSimpleName());
+            if(oldImg!=null){
+                imageService.delete(String.valueOf(oldImg.getImgId()));
+            }
+            String imgUuid = imageService.add(data.get("companyImg"),company.getClass().getSimpleName());
             company.setImgUuid(imgUuid);
-        } else {
-            company.setImgUuid(data.get("imguuid"));
         }
         company.setIntroduction(data.get("introduction"));
         company.setType(data.get("type"));

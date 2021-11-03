@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,7 @@ public class VegeInfoServiceImpl extends BaseService implements VegeInfoService 
         }
     }
 
+    @Transactional
     @Override
     public boolean delete(String vegeId) {
 

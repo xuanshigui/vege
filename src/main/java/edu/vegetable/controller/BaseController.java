@@ -15,7 +15,6 @@ abstract class BaseController {
                 data.put(field, param);
             }
         }
-
         return data;
     }
 

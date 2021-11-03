@@ -46,6 +46,9 @@ public class ImageServiceImpl extends BaseService implements ImageService {
     @Override
     public String queryPathByUuid(String imgUuid){
         Image image = imageRepository.findByUuid(imgUuid);
+        if(image==null){
+            return "/resource/static/img/default.jpeg";
+        }
         return image.getImgPath();
     }
 

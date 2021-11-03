@@ -266,12 +266,13 @@
             processData: false,
             success: function (data) {
                 if (data) {
-                        console.log("回显了图片");
-                        $('#imgpath').val(data.data.path);
-                        var imgPath = data.data.path;
+                    console.log("回显了图片");
+                    $('#imgpath').val(data.data.path);
+                    var imgPath = data.data.path;
                         //$('#imgload').attr("src","https://nimg.ws.126.net/?url=http%3A%2F%2Fdingyue.ws.126.net%2F2021%2F0818%2F96d73724j00qy0uqu001xc000hs00a1g.jpg&thumbnail=650x2147483647&quality=80&type=jpg");
-                        $('#imgload').attr("src","http://127.0.0.1:8080/show_img?imgPath="+imgPath);
-                        $('#imgload').show();
+                    $('#imgload').attr("src","http://127.0.0.1:8080/show_img?imgPath="+imgPath);
+                    $('#imgload').show();
+                    $('#imguuid').val("");
                     alert("上传成功！")
                 }
             },
@@ -370,7 +371,7 @@
             alert("请填写蔬菜名称！");
             return;
         }
-        if(""==$('#imgupload').val()||$('#imgupload').val()==null){
+        if((""==$('#imgupload').val()||$('#imgupload').val()==null)&&(""==$('#imguuid').val()||$('#imguuid').val()==null)){
             alert("请上传蔬菜图片！");
             return;
         }

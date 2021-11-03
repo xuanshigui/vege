@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,14 +34,20 @@ public class UploadController extends BaseController{
             throw new Exception("上传文件不能为空");
         }
         String fileNames = file.getOriginalFilename();
-        String basePath = request.getServletContext().getRealPath("/static/uploadfile/image");
 
-        File dir = new File(basePath);
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+        String format=sdf.format(new Date());
+        String basePath = this.getClass().getClassLoader().getResource("static").getFile();
+
+        String absolutePath = basePath + "/uploadfile/image/" + format +"/";
+        //String basePath = request.getServletContext().getRealPath("resources/static/uploadfile");
+
+        File dir = new File(absolutePath);
         if (!dir.isDirectory()) {//文件目录不存在，就创建一个
             dir.mkdirs();
         }
         //上传文件
-        String filePath = fileService.uploadFile(file, fileNames, basePath);
+        String filePath = fileService.uploadFile(file, fileNames, absolutePath);
         JSONObject data = new JSONObject();
         data.put("path", filePath);
         return buildResponse(data);
@@ -53,15 +61,19 @@ public class UploadController extends BaseController{
         }
         String fileNames = file.getOriginalFilename();
         //上传文件
-        String basePath = request.getServletContext().getRealPath("/static/uploadfile/image");
-        File dir = new File(basePath);
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+        String format=sdf.format(new Date());
+        String basePath = this.getClass().getClassLoader().getResource("static").getFile();
+
+        String absolutePath = basePath + "/uploadfile/image/" + format;
+        File dir = new File(absolutePath);
         if (!dir.isDirectory()) {//文件目录不存在，就创建一个
             dir.mkdirs();
         }
-        String filePath = fileService.uploadFile(file, fileNames,basePath);
+        String filePath = fileService.uploadFile(file, fileNames,absolutePath);
         Map<String, String> map = new HashMap<>();
         String newFileName = filePath.substring(filePath.lastIndexOf("/"),filePath.length());
-        String newFilePath = "http://127.0.0.1:8080/show_img?imgPath="+basePath+ "/" + newFileName;
+        String newFilePath = "http://127.0.0.1:8080/show_img?imgPath="+absolutePath + newFileName;
         System.out.println(newFilePath);
         map.put("location", newFilePath);
         //"location", downloadUrl + dir + "/" + name
