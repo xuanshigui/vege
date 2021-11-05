@@ -115,4 +115,14 @@ public class VegeInfoServiceImpl extends BaseService implements VegeInfoService 
         VegeInfo vegeInfo = vegeInfoRepository.findByVegeId(Integer.parseInt(vegeId));
         return vegeInfo.getVegeName();
     }
+
+    @Override
+    public VegeInfo queryByName(String vegeName) {
+        String queryName = "%" +vegeName+ "%";
+        List<VegeInfo> vegeInfoList = vegeInfoRepository.findAllByVegeNameLike(queryName);
+        if(vegeInfoList.size()==0){
+            return null;
+        }
+        return vegeInfoList.get(0);
+    }
 }

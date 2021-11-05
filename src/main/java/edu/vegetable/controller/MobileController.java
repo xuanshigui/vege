@@ -60,10 +60,35 @@ public class MobileController extends BaseController {
             //建立图片
             String imgPath = imageService.queryPathByUuid(vegeInfo.getImgUuid());
             mobileVege.setImgPath("http://8.142.64.137:8080/show_img?imgPath="+imgPath);
+            mobileVege.setVegeId(vegeInfo.getVegeId());
             mobileVegeList.add(mobileVege);
         }
         JSONObject data = new JSONObject();
         data.put("mobileVegeList",mobileVegeList);
+        return buildResponse(data);
+    }
+
+    @RequestMapping(value = "/mobile_vegeinfobyname.json", method = {RequestMethod.GET, RequestMethod.GET})
+    public Map queryByName(HttpServletRequest request) {
+        String vegeName = request.getParameter("vegeName");
+        VegeInfo vegeInfo = vegeService.queryByName(vegeName);
+        if(vegeInfo==null){
+            JSONObject data = new JSONObject();
+            data.put("msg","没有这种蔬菜！");
+            return buildResponse(data);
+        }
+        JSONObject data = new JSONObject();
+        data.put("vegeId", vegeInfo.getVegeId());
+        data.put("vegeName", vegeInfo.getVegeName());
+        data.put("alias", vegeInfo.getAlias());
+        String imgPath = "";
+        imgPath = imageService.queryPathByUuid(vegeInfo.getImgUuid());
+        data.put("imgPath", "http://8.142.64.137:8080/show_img?imgPath="+imgPath);
+        data.put("introduction", vegeInfo.getIntroduction());
+        data.put("classification", Constants.VEGE_CLASS_MAP.get(vegeInfo.getClassification()));
+        data.put("note", vegeInfo.getNote());
+        DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        data.put("updateTime", sdf.format(vegeInfo.getUpdateTime()));
         return buildResponse(data);
     }
 

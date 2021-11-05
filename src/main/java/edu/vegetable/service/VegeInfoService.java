@@ -21,5 +21,7 @@ public interface VegeInfoService {
 
     VegeInfo queryById(String vegeId);
 
+    VegeInfo queryByName(String vegeName);
+
     String getVegeNameById(String vegeId);
 }
