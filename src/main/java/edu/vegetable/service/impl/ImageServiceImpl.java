@@ -47,7 +47,7 @@ public class ImageServiceImpl extends BaseService implements ImageService {
     public String queryPathByUuid(String imgUuid){
         Image image = imageRepository.findByUuid(imgUuid);
         if(image==null){
-            return "/resource/static/img/default.jpeg";
+            return "C:\\vege_knowledge\\resource\\image\\20211105\\default.jpeg";
         }
         return image.getImgPath();
     }

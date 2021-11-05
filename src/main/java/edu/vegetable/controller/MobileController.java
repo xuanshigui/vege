@@ -68,7 +68,7 @@ public class MobileController extends BaseController {
         return buildResponse(data);
     }
 
-    @RequestMapping(value = "/mobile_vegeinfobyname.json", method = {RequestMethod.GET, RequestMethod.GET})
+    @RequestMapping(value = "/mobile_vegeinfobyname.json", method = {RequestMethod.GET, RequestMethod.POST})
     public Map queryByName(HttpServletRequest request) {
         String vegeName = request.getParameter("vegeName");
         VegeInfo vegeInfo = vegeService.queryByName(vegeName);

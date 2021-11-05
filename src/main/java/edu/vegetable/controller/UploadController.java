@@ -34,12 +34,14 @@ public class UploadController extends BaseController{
             throw new Exception("上传文件不能为空");
         }
         String fileNames = file.getOriginalFilename();
+        System.out.println(fileNames);
 
         SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
         String format=sdf.format(new Date());
-        String basePath = this.getClass().getClassLoader().getResource("static").getFile();
+        //String basePath = this.getClass().getClassLoader().getResource("static").getFile();
 
-        String absolutePath = basePath + "/uploadfile/image/" + format +"/";
+        String absolutePath = "C:\\vege_knowledge\\resource\\image\\" + format +"\\";
+        //String absolutePath = basePath + "/uploadfile/image/" + format +"/";
         //String basePath = request.getServletContext().getRealPath("resources/static/uploadfile");
 
         File dir = new File(absolutePath);
@@ -63,18 +65,19 @@ public class UploadController extends BaseController{
         //上传文件
         SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
         String format=sdf.format(new Date());
-        String basePath = this.getClass().getClassLoader().getResource("static").getFile();
+        //String basePath = this.getClass().getClassLoader().getResource("static").getFile();
 
-        String absolutePath = basePath + "/uploadfile/image/" + format;
+        //String absolutePath = basePath + "/uploadfile/image/" + format;
+        String absolutePath = "C:\\vege_knowledge\\resource\\image\\" + format +"\\";
         File dir = new File(absolutePath);
         if (!dir.isDirectory()) {//文件目录不存在，就创建一个
             dir.mkdirs();
         }
         String filePath = fileService.uploadFile(file, fileNames,absolutePath);
         Map<String, String> map = new HashMap<>();
-        String newFileName = filePath.substring(filePath.lastIndexOf("/"),filePath.length());
-        String newFilePath = "http://127.0.0.1:8080/show_img?imgPath="+absolutePath + newFileName;
-        System.out.println(newFilePath);
+        String newFileName = filePath.substring(filePath.lastIndexOf("\\"),filePath.length());
+        String newFilePath = "http://8.142.64.137:8080/show_img?imgPath="+absolutePath + newFileName;
+        //System.out.println(newFilePath);
         map.put("location", newFilePath);
         //"location", downloadUrl + dir + "/" + name
 
